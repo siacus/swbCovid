@@ -1,2 +1,3 @@
 # swbCovid
-data and replication scripts for the SWBI/SWBJ and Covid19
+data and replication scripts for the "SWB-I/SWB-J and Covid19" paper
+
