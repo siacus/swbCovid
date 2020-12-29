@@ -40,11 +40,11 @@ cols <- makeColorRampPalette(c("white", "steelblue",    # distances 0 to 3 color
                              cutoff.distance  ,
                              100)
 
-# Download the data locally
-download.file()
+# Download the data locally or via this command from github
 # load("iData.rda")
-# load("jData.rda")
-# or 
+load(url("https://github.com/siacus/swbCovid/blob/main/rda/iData.rda?raw=true"))
+
+
 
 var.ita <- c("swbi", "iDeaths", "iCases",
              "FTSEMIB", "iCoronaVirus", "iCoronaVirusNews",
@@ -468,6 +468,10 @@ dev.off()
 
 
 ######### JAPAN  
+
+# Download the data locally or via this command from github
+# load("jData.rda")
+load(url("https://github.com/siacus/swbCovid/blob/main/rda/jData.rda?raw=true"))
 
 var.jap <- c("swbj", "jDeaths", "jCases", "NIKKEI",
              "jCoronaVirus", "jCoronaVirusNews",
@@ -922,7 +926,9 @@ dev.off()
 
 # SEM
 
-load("iData.rda")
+# Download the data locally or via this command from github
+# load("iData.rda")
+load(url("https://github.com/siacus/swbCovid/blob/main/rda/iData.rda?raw=true"))
 
 var.ita <- c("swbi", "iDeaths", "iCases",
              "FTSEMIB", "iCoronaVirus", "iCoronaVirusNews",
@@ -985,7 +991,9 @@ dev.off()
 
 
 
-load("jData.rda")
+# Download the data locally or via this command from github
+# load("jData.rda")
+load(url("https://github.com/siacus/swbCovid/blob/main/rda/jData.rda?raw=true"))
 
 
 var.jap <- c("swbj", "jDeaths", "jCases", "NIKKEI",
