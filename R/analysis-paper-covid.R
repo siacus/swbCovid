@@ -116,11 +116,13 @@ iCr <- iCC[,-grep("swb",colnames(iCC))]
 
 icol.order <- try(hclust(dist(t(iCr)))$order, TRUE)
 
+# Monthly correlation plots (IT)
 corrplot(iCr[,icol.order],col=corcol(100),tl.col="black", tl.srt=45)
 pdf("corItaly.pdf",width=9,height=6)
 corrplot(iCr[,icol.order],col=corcol(100),tl.col="black", tl.srt=45)
 dev.off()
 
+# DynENET (IT)
 idates <- rownames(dati)
 lambda <- seq(1e-6,1,length=250)
 imsem <- NULL
@@ -249,7 +251,7 @@ IM <- stargazer::stargazer(
        model.numbers=FALSE,digits = 2, dep.var.labels="SWB-I")
 
 
-
+# Benchmarking DynENET with ARIMA(1,0,1) - (IT)
 itoplot <- xts(id[,c("true","p1","ar")],order.by=as.Date(idates[(ioffset+1):ni]))
 colnames(itoplot) <- c("SWB-I","Elastic Net","ARIMA")
 
@@ -279,6 +281,7 @@ isumm$var <- colnames(iA)
 isumm$country <- "Italy"
 save(isumm,file="isumm.rda")
 
+# IF Space (IT)
 pdf(file="isummary.pdf",width=9,height=6)
 ggplot(data=isumm,aes(x=weeks,y=rank,label=var)) + 
   geom_point() + 
@@ -295,23 +298,7 @@ ggplot(data=isumm,aes(x=weeks,y=posrank,label=var)) +
   ylab("average relative rank")
 dev.off()  
 
-rbind(isumm,jsumm) -> summ
 
-pdf(file="summary.pdf",width=9,height=6)
-ggplot(data=summ,aes(x=weeks,y=rank,label=var,color=country)) + 
-  geom_point() + 
-  geom_text_repel(  point.padding = unit(0.35, "lines")) +
-  xlab("number of times variable is selected")+
-  ylab("average relative rank")
-dev.off()  
-
-pdf(file="summaryPos.pdf",width=9,height=6)
-ggplot(data=summ,aes(x=weeks,y=posrank,label=var,color=country)) + 
-  geom_point() + 
-  geom_text_repel(  point.padding = unit(0.35, "lines")) +
-  xlab("number of times variable is selected over")+
-  ylab("average relative rank")
-dev.off()  
 
 bigmat <- ircf1[,-1]   
 rownames(bigmat) <- ircfm$date
@@ -544,6 +531,7 @@ jCr <- jCC[,-grep("swb",colnames(jCC))]
 
 jcol.order <- try(hclust(dist(t(jCr)))$order, TRUE)
 
+# Monthly correlation plot (JP)
 corrplot(jCr[,jcol.order],col=corcol(100),tl.col="black", tl.srt=45)
 pdf("corJapan.pdf",width=9,height=6)
 corrplot(jCr[,jcol.order],col=corcol(100),tl.col="black", tl.srt=45)
@@ -551,7 +539,7 @@ dev.off()
 
 
 
-
+# DynENET (JP)
 
 jdates <- rownames(datj)
 lambda <- seq(1e-6,1,length=250)
@@ -662,6 +650,7 @@ jsumm$country <- "Japan"
 save(jsumm,file="jsumm.rda")
 
 
+# IF Space (JP)
 pdf(file="jsummary.pdf",width=9,height=6)
 ggplot(data=jsumm,aes(x=weeks,y=rank,label=var)) + 
   geom_point() + 
@@ -678,6 +667,28 @@ ggplot(data=jsumm,aes(x=weeks,y=posrank,label=var)) +
   ylab("average relative rank")+
   labs(color="Country")
 dev.off() 
+
+
+
+
+rbind(isumm,jsumm) -> summ
+
+pdf(file="summary.pdf",width=9,height=6)
+ggplot(data=summ,aes(x=weeks,y=rank,label=var,color=country)) +
+  geom_point() +
+  geom_text_repel(  point.padding = unit(0.35, "lines")) +
+  xlab("number of times variable is selected")+
+  ylab("average relative rank")
+dev.off()
+
+pdf(file="summaryPos.pdf",width=9,height=6)
+ggplot(data=summ,aes(x=weeks,y=posrank,label=var,color=country)) +
+  geom_point() +
+  geom_text_repel(  point.padding = unit(0.35, "lines")) +
+  xlab("number of times variable is selected over")+
+  ylab("average relative rank")
+dev.off()
+
 
 pdf(file="summary.pdf",width=10,height=7)
 ggplot(data=summ,aes(x=weeks,y=rank,label=var,color=country)) + 
@@ -699,7 +710,7 @@ ggplot(data=summ,aes(x=weeks,y=posrank,label=var,color=country)) +
 
 dev.off()
 
-
+# Benchmarking DynENET against ARIMA(1,0,1) - (JP)
 datj <- data.frame(na.approx(jtmpL["/2020-09-20",var.japL],rule=2))
 datj <- data.frame( scale(datj) )
 jyear <- year(as.Date(rownames(datj)))
@@ -966,7 +977,7 @@ pars.ita <- summary(sem.ita, fit.measures=FALSE)
 
 
 pars.ita$PE$exo <- NULL 
-stargazer(pars.ita, summary=FALSE, rownames=FALSE, initial.zero=FALSE, digits=3, 
+#stargazer(pars.ita, summary=FALSE, rownames=FALSE, initial.zero=FALSE, digits=3, 
           title='Explaining SWB-I')
 
 
@@ -1034,7 +1045,7 @@ pars.jpn <- summary(sem.jpn, fit.measures=FALSE)
 
 
 pars.jpn$PE$exo <- NULL 
-stargazer(pars.jpn, summary=FALSE, rownames=FALSE, initial.zero=FALSE, digits=3, title='Explaining SWB-J')
+#stargazer(pars.jpn, summary=FALSE, rownames=FALSE, initial.zero=FALSE, digits=3, title='Explaining SWB-J')
 
 
 
