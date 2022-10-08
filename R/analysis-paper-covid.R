@@ -1,3 +1,65 @@
+# Script tested on 8 Oct 2022 with this configuration
+
+# > sessionInfo()
+# R version 4.2.1 (2022-06-23)
+# Platform: aarch64-apple-darwin20 (64-bit)
+# Running under: macOS Monterey 12.4
+# 
+# Matrix products: default
+# LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
+# 
+# locale:
+#   [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+# 
+# attached base packages:
+#   [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+# [8] base     
+# 
+# other attached packages:
+#   [1] ggrepel_0.9.1     semPlot_1.1.6     lavaan_0.6-12     corrplot_0.92    
+# [5] stargazer_5.2.3   progress_1.2.2    xtable_1.8-4      dplyr_1.0.10     
+# [9] vars_1.5-6        lmtest_0.9-40     urca_1.3-3        strucchange_1.5-3
+# [13] sandwich_3.0-2    MASS_7.3-57       reshape2_1.4.4    ggplot2_3.3.6    
+# [17] pheatmap_1.0.12   ranger_0.14.1     glmnet_4.1-4      gtrendsR_1.5.1   
+# [21] yuima_1.15.15     mvtnorm_1.1-3     cubature_2.0.4.4  expm_0.999-6     
+# [25] data.table_1.14.2 quantmod_0.4.20   TTR_0.24.3        xts_0.12.1       
+# [29] zoo_1.8-10        Matrix_1.4-1     
+# 
+# loaded via a namespace (and not attached):
+#   [1] minqa_1.2.4         colorspace_2.0-3    deldir_1.0-6       
+# [4] ellipsis_0.3.2      htmlTable_2.4.1     corpcor_1.6.10     
+# [7] base64enc_0.1-3     rstudioapi_0.14     farver_2.1.1       
+# [10] fansi_1.0.3         codetools_0.2-18    splines_4.2.1      
+# [13] mnormt_2.1.0        knitr_1.40          glasso_1.11        
+# [16] Formula_1.2-4       nloptr_2.0.3        cluster_2.1.3      
+# [19] png_0.1-7           compiler_4.2.1      backports_1.4.1    
+# [22] fastmap_1.1.0       cli_3.4.0           htmltools_0.5.3    
+# [25] prettyunits_1.1.1   tools_4.2.1         OpenMx_2.20.6      
+# [28] igraph_1.3.4        coda_0.19-4         gtable_0.3.1       
+# [31] glue_1.6.2          Rcpp_1.0.9          carData_3.0-5      
+# [34] vctrs_0.4.1         nlme_3.1-157        lisrelToR_0.1.5    
+# [37] iterators_1.0.14    calculus_0.3.3      psych_2.2.5        
+# [40] xfun_0.33           stringr_1.4.1       openxlsx_4.2.5     
+# [43] lme4_1.1-30         lifecycle_1.0.2     gtools_3.9.3       
+# [46] XML_3.99-0.10       scales_1.2.1        hms_1.1.2          
+# [49] kutils_1.70         parallel_4.2.1      RColorBrewer_1.1-3 
+# [52] curl_4.3.2          pbapply_1.5-0       gridExtra_2.3      
+# [55] rpart_4.1.16        latticeExtra_0.6-30 stringi_1.7.8      
+# [58] foreach_1.5.2       sem_3.1-15          checkmate_2.1.0    
+# [61] boot_1.3-28         zip_2.2.1           shape_1.4.6        
+# [64] rlang_1.0.5         pkgconfig_2.0.3     arm_1.12-2         
+# [67] lattice_0.20-45     purrr_0.3.4         labeling_0.4.2     
+# [70] htmlwidgets_1.5.4   tidyselect_1.1.2    plyr_1.8.7         
+# [73] magrittr_2.0.3      R6_2.5.1            generics_0.1.3     
+# [76] Hmisc_4.7-1         pillar_1.8.1        foreign_0.8-82     
+# [79] withr_2.5.0         rockchalk_1.8.157   survival_3.3-1     
+# [82] abind_1.4-5         nnet_7.3-17         tibble_3.1.8       
+# [85] crayon_1.5.1        fdrtool_1.2.17      interp_1.1-3       
+# [88] utf8_1.2.2          jpeg_0.1-9          grid_4.2.1         
+# [91] qgraph_1.9.2        pbivnorm_0.6.0      digest_0.6.29      
+# [94] mi_1.1              RcppParallel_5.1.5  munsell_0.5.0    
+
+
 rm(list=ls())
 
 library(xts)
@@ -231,25 +293,27 @@ for(iy in 2020){
 
 imodFull <- step(lm(swbi~ -1 + ., data=dati[iyear==2020 & imonth<=10,]))
 
-IM <- stargazer::stargazer(
-        imodFull,
-        imod[[1]]$mod,
-        imod[[2]]$mod,
-        imod[[3]]$mod,
-        imod[[4]]$mod,
-        imod[[5]]$mod,
-        imod[[6]]$mod,
-        imod[[7]]$mod,
-        imod[[8]]$mod,
-        imod[[9]]$mod,
-       no.space=TRUE, align=TRUE,
-       omit.stat=c("LL","ser","f"),
-       column.labels=c("Jan-Sep",
-         "Jan", "Feb", "Mar", "Apr", "May",
-          "Jun", "Jul", "Aug", "Sep"
-         ),
-       model.numbers=FALSE,digits = 2, dep.var.labels="SWB-I")
+mi1 <- imodFull 
+mi2 <- imod[[1]]$mod
+mi3 <- imod[[2]]$mod
+mi4 <- imod[[3]]$mod
+mi5 <- imod[[4]]$mod
+mi6 <- imod[[5]]$mod
+mi7 <- imod[[6]]$mod
+mi8 <- imod[[7]]$mod
+mi9 <- imod[[8]]$mod
 
+IM <- stargazer::stargazer(
+    mi1,mi2,mi3,mi4,mi5,
+    mi6,mi7,mi8,mi9,
+    no.space=TRUE, align=TRUE,
+    omit.stat=c("LL","ser","f"),
+    column.labels=c("Jan-Sep",
+                    "Jan", "Feb", "Mar", "Apr", "May",
+                    "Jun", "Jul", "Aug", "Sep"
+    ),
+    model.numbers=FALSE,digits = 2, dep.var.labels="SWB-I")
+  
 
 # Benchmarking DynENET with ARIMA(1,0,1) - (IT)
 itoplot <- xts(id[,c("true","p1","ar")],order.by=as.Date(idates[(ioffset+1):ni]))
@@ -732,24 +796,28 @@ for(jy in 2020){
 
 jmodFull <- step(lm(swbj~ -1 + ., data=datj[jyear==2020 & jmonth<=10,]))
 
+
+mj1 <- jmodFull 
+mj2 <- jmod[[1]]$mod
+mj3 <- jmod[[2]]$mod
+mj4 <- jmod[[3]]$mod
+mj5 <- jmod[[4]]$mod
+mj6 <- jmod[[5]]$mod
+mj7 <- jmod[[6]]$mod
+mj8 <- jmod[[7]]$mod
+mj9 <- jmod[[8]]$mod
+
 JM <- stargazer::stargazer(
-  jmodFull,
-  jmod[[1]]$mod,
-  jmod[[2]]$mod,
-  jmod[[3]]$mod,
-  jmod[[4]]$mod,
-  jmod[[5]]$mod,
-  jmod[[6]]$mod,
-  jmod[[7]]$mod,
-  jmod[[8]]$mod,
-  jmod[[9]]$mod,
+  mj1,mj2,mj3,mj4,mj5,
+  mj6,mj7,mj8,mj9,
   no.space=TRUE, align=TRUE,
   omit.stat=c("LL","ser","f"),
   column.labels=c("Jan-Sep",
-    "Jan", "Feb", "Mar", "Apr", "May",
-    "Jun", "Jul", "Aug", "Sep"
+                  "Jan", "Feb", "Mar", "Apr", "May",
+                  "Jun", "Jul", "Aug", "Sep"
   ),
   model.numbers=FALSE,digits = 2, dep.var.labels="SWB-J")
+
 
 
 jtoplot <- xts(jd[,c("true","p1","ar")],order.by=as.Date(jdates[(joffset+1):nj]))
@@ -977,10 +1045,6 @@ pars.ita <- summary(sem.ita, fit.measures=FALSE)
 
 
 pars.ita$PE$exo <- NULL 
-#stargazer(pars.ita, summary=FALSE, rownames=FALSE, initial.zero=FALSE, digits=3, 
-          title='Explaining SWB-I')
-
-
 
 
 mymod <- sem.ita
@@ -1045,9 +1109,6 @@ pars.jpn <- summary(sem.jpn, fit.measures=FALSE)
 
 
 pars.jpn$PE$exo <- NULL 
-#stargazer(pars.jpn, summary=FALSE, rownames=FALSE, initial.zero=FALSE, digits=3, title='Explaining SWB-J')
-
-
 
 mymod <- sem.jpn
 
